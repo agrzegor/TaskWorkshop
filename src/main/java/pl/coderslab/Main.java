@@ -22,8 +22,8 @@ public class Main {
 
         readFile(FILE_NAME);
         boolean flag = true;
+        printMenu();
         while (flag) {
-            printMenu();
             flag = menuOption(scanner.nextLine());
         }
     }
@@ -34,21 +34,22 @@ public class Main {
             case "add":
                 addTask();
                 System.out.println("Task has been added.");
+                printMenu();
                 return true;
             case "list":
                 listAllTasks();
+                printMenu();
                 return true;
             case "remove":
                 removeTask();
+                printMenu();
                 return true;
             case "exit":
                 exitTaskManager();
                 System.out.println(ConsoleColors.RED + "Bye, bye." + ConsoleColors.RESET);
                 return false;
-            default:
-                System.out.println("Select correct option.");
         }
-        return false;
+        return true;
     }
 
     private static void exitTaskManager() {
