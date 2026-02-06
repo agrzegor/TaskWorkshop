@@ -4,10 +4,8 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -67,21 +65,20 @@ public class Main {
     }
 
     private static void removeTask() {
-
-        System.out.println("Please select number to remove.");
-        String taskNumToRemove = scanner.next();
-        while (!VALIDATION.numberToRemoveValidation(taskNumToRemove, TASKS)) {
-            taskNumToRemove = scanner.next();
+        if (VALIDATION.removePossibleValidation(TASKS)) {
+            System.out.println("Please select number to remove.");
+            String taskNumToRemove = scanner.next();
+            while (!VALIDATION.numberToRemoveValidation(taskNumToRemove, TASKS)) {
+                taskNumToRemove = scanner.next();
+            }
+            int taskNumToRemoveInt = Integer.parseInt(taskNumToRemove);
+            TASKS = ArrayUtils.remove(TASKS, taskNumToRemoveInt);
+            System.out.println("Value was successfully deleted.");
         }
 
-        int taskNumToRemoveInt = Integer.parseInt(taskNumToRemove);
-        TASKS = ArrayUtils.remove(TASKS, taskNumToRemoveInt);
-
-        System.out.println("Value was successfully deleted.");
     }
 
     private static void listAllTasks() {
-
         for (int row = 0; row < TASKS.length; row++) {
             System.out.print(row + ": ");
             for (int col = 0; col < TASKS[0].length; col++) {

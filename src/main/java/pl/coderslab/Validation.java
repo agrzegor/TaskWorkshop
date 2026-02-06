@@ -14,7 +14,7 @@ public class Validation {
 
     public boolean dateValidation(String input) {
 
-        DateFormat dt = new SimpleDateFormat("yyyy-mm-dd");
+        DateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
         dt.setLenient(false);
         try {
             dt.parse(input);
@@ -54,9 +54,8 @@ public class Validation {
             if (number < 0) {
                 System.out.println("Incorrect argument passed. Please give number greater or equal 0.");
             } else if (number >= array.length) {
-                System.out.println("Incorrect argument passed. Please give number lower or equal %d."
-                        .formatted(array.length-1));
-            }else{
+                System.out.printf("Incorrect argument passed. Please give number lower or equal %d.%n", array.length-1);
+            }else {
                 return true;
             }
         } catch (NumberFormatException e) {
@@ -64,6 +63,14 @@ public class Validation {
         }
 
         return false;
+    }
+
+    public boolean removePossibleValidation (String [][] array){
+        if(array.length == 0){
+            System.out.println("There is no element to remove");
+            return false;
+        }
+        return true;
     }
 }
 
