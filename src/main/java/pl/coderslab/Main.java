@@ -20,6 +20,7 @@ public class Main {
 
         readFile(FILE_NAME);
         boolean flag = true;
+
         printMenu();
         while (flag) {
             flag = menuOption(scanner.nextLine());
