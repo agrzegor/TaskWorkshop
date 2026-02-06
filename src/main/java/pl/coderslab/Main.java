@@ -2,12 +2,12 @@ package pl.coderslab;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -21,30 +21,47 @@ public class Main {
     public static void main(String[] args) {
 
         readFile(FILE_NAME);
-
-        while (true) {
+        boolean flag = true;
+        while (flag) {
             printMenu();
-            menuOption(scanner.nextLine());
+            flag = menuOption(scanner.nextLine());
         }
     }
 
-    public static void menuOption(String option) {
+    public static boolean menuOption(String option) {
 
         switch (option) {
             case "add":
                 addTask();
                 System.out.println("Task has been added.");
-                break;
-           case "list":
+                return true;
+            case "list":
                 listAllTasks();
-                break;
-           case "remove":
+                return true;
+            case "remove":
                 removeTask();
-                 break;
-//            case "exit":
-//                exitTaskManager();
+                return true;
+            case "exit":
+                exitTaskManager();
+                System.out.println(ConsoleColors.RED + "Bye, bye." + ConsoleColors.RESET);
+                return false;
             default:
                 System.out.println("Select correct option.");
+        }
+        return false;
+    }
+
+    private static void exitTaskManager() {
+
+        try (FileWriter fw = new FileWriter(FILE_NAME);) {
+            for (String[] task : TASKS) {
+                for (String s : task) {
+                    fw.write(s);
+                }
+                fw.write("\n");
+            }
+        } catch (IOException e) {
+            System.out.println("Error during writing data to file.");
         }
     }
 
@@ -52,27 +69,27 @@ public class Main {
 
         System.out.println("Please select number to remove.");
         String taskNumToRemove = scanner.next();
-        while(!VALIDATION.numberToRemoveValidation(taskNumToRemove, TASKS)){
+        while (!VALIDATION.numberToRemoveValidation(taskNumToRemove, TASKS)) {
             taskNumToRemove = scanner.next();
         }
 
         int taskNumToRemoveInt = Integer.parseInt(taskNumToRemove);
-        TASKS = ArrayUtils.remove(TASKS,taskNumToRemoveInt);
+        TASKS = ArrayUtils.remove(TASKS, taskNumToRemoveInt);
 
         System.out.println("Value was successfully deleted.");
-        }
+    }
 
     private static void listAllTasks() {
 
-        for (int row = 0;row< TASKS.length; row++){
-            System.out.print(row +": ");
-            for (int col = 0; col< TASKS[0].length; col++){
-                System.out.print (TASKS[row][col]);
+        for (int row = 0; row < TASKS.length; row++) {
+            System.out.print(row + ": ");
+            for (int col = 0; col < TASKS[0].length; col++) {
+                System.out.print(TASKS[row][col]);
             }
             System.out.println();
         }
     }
-    
+
     public static void readFile(String fileName) {
 
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName))) {
@@ -121,7 +138,8 @@ public class Main {
         TASKS = Arrays.copyOf(TASKS, TASKS.length + 1);
 
         for (int row = TASKS.length - 1; row >= 0; row--) {
-            TASKS[TASKS.length - 1] = new String[]{taskDescription, dueDateInput, importance};
+            TASKS[TASKS.length - 1] = new String[]
+                    {taskDescription.concat(" "), dueDateInput.concat(" "), importance};
         }
     }
 

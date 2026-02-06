@@ -44,18 +44,23 @@ public class Validation {
         return false;
     }
 
-    public boolean numberToRemoveValidation(String input, String [][] array) {
+    public boolean numberToRemoveValidation(String input, String[][] array) {
 
         if (input == null) {
             return false;
         }
         try {
-            if (NumberUtils.isCreatable(input) || Integer.parseInt(input)<array.length) {
+            int number = Integer.parseInt(input);
+            if (number < 0) {
+                System.out.println("Incorrect argument passed. Please give number greater or equal 0.");
+            } else if (number >= array.length) {
+                System.out.println("Incorrect argument passed. Please give number lower or equal %d."
+                        .formatted(array.length-1));
+            }else{
                 return true;
             }
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("Incorrect argument passed. Please give number greater or equal.");
-            return false;
+        } catch (NumberFormatException e) {
+            System.out.println("Incorrect argument passed. Please give number in valid format");
         }
 
         return false;
